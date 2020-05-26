@@ -8,7 +8,7 @@ public class TaskModel {
 	
 	@Id
 	String id;
-	//Add name
+	String taskName;
 	String description;
 	String label;
 	Date dueDate;
@@ -18,6 +18,7 @@ public class TaskModel {
 	
 	public TaskModel() {
 		this.description = "Demo Desctiption";
+		this.taskName = "Demo Task Name";
 		this.label = "Demo Label";
 		this.dueDate = new Date();
 		this.createdDate = new Date();
@@ -30,6 +31,14 @@ public class TaskModel {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
 
 	public String getDescription() {
