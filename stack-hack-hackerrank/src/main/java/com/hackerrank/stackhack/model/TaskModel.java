@@ -17,12 +17,7 @@ public class TaskModel {
 	
 	
 	public TaskModel() {
-		this.description = "Demo Desctiption";
-		this.taskName = "Demo Task Name";
-		this.label = "Demo Label";
-		this.dueDate = new Date();
 		this.createdDate = new Date();
-		this.status = "demo Status";
 	}
 	
 	public String getId() {

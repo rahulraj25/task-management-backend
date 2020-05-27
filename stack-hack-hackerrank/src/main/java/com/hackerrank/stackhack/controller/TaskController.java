@@ -1,15 +1,18 @@
 package com.hackerrank.stackhack.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.StreamUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,10 +37,23 @@ public class TaskController {
 		return new ResponseEntity<List<TaskModel>>(StreamUtils.createStreamFromIterator(taskRepository.findAll().iterator()).collect(Collectors.toList()),HttpStatus.OK);
 	}
 	
-	@PutMapping(path="addTask",consumes = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<String> addTask(@RequestParam TaskModel taskModel){
+	@PostMapping(path="addTask")
+	public ResponseEntity<String> addTask(@RequestBody TaskModel taskModel){
 		taskRepository.save(taskModel);
 		return new ResponseEntity<String>("Added",HttpStatus.OK); 
+	}
+	
+	@PutMapping(path="setDueDate")
+	public ResponseEntity<String> setDueDate(@RequestParam String idToUpdate, @RequestParam String dueDate){
+		TaskModel taskToUpdate = taskRepository.findById(idToUpdate).get();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			taskToUpdate.setDueDate(formatter.parse(dueDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		taskRepository.save(taskToUpdate);
+		return new ResponseEntity<String>("Due Date Changed",HttpStatus.OK); 
 	}
 	
 }
