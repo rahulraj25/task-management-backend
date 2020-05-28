@@ -10,6 +10,7 @@ import org.springframework.data.util.StreamUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,11 @@ public class TaskController {
 		return new ResponseEntity<List<TaskModel>>(StreamUtils.createStreamFromIterator(taskRepository.findAll().iterator()).collect(Collectors.toList()),HttpStatus.OK);
 	}
 	
+	@GetMapping(path="getTask/{id}")
+	public ResponseEntity<TaskModel> getTasks(@PathVariable String id){
+		return new ResponseEntity<TaskModel>(taskRepository.findById(id).get(),HttpStatus.OK);
+	}
+	
 	@PostMapping(path="addTask")
 	public ResponseEntity<String> addTask(@RequestBody TaskModel taskModel){
 		taskRepository.save(taskModel);
@@ -44,14 +50,10 @@ public class TaskController {
 	}
 	
 	@PutMapping(path="setDueDate")
-	public ResponseEntity<String> setDueDate(@RequestParam String idToUpdate, @RequestParam String dueDate){
+	public ResponseEntity<String> setDueDate(@RequestParam String idToUpdate, @RequestParam String dueDate) throws ParseException{
 		TaskModel taskToUpdate = taskRepository.findById(idToUpdate).get();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		try {
 			taskToUpdate.setDueDate(formatter.parse(dueDate));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
 		taskRepository.save(taskToUpdate);
 		return new ResponseEntity<String>("Due Date Changed",HttpStatus.OK); 
 	}
