@@ -3,12 +3,13 @@ package com.hackerrank.stackhack.model;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-public class TaskModel {
+@Document(collection = "tasks")
+public class Task {
 	
 	@Id
 	String id;
-	String taskName;
 	String description;
 	String label;
 	Date dueDate;
@@ -16,7 +17,7 @@ public class TaskModel {
 	String status;
 	
 	
-	public TaskModel() {
+	public Task() {
 		this.createdDate = new Date();
 	}
 	
@@ -26,14 +27,6 @@ public class TaskModel {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getTaskName() {
-		return taskName;
-	}
-
-	public void setTaskName(String taskName) {
-		this.taskName = taskName;
 	}
 
 	public String getDescription() {
