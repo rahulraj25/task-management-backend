@@ -10,12 +10,14 @@ import org.springframework.data.util.StreamUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,6 +51,12 @@ public class TaskController {
 	public ResponseEntity<String> addTask(@RequestBody Task task){
 		taskRepository.save(task);
 		return new ResponseEntity<String>("Added",HttpStatus.OK); 
+	}
+	
+	@DeleteMapping(path="deleteTask/{id}")
+	public ResponseEntity<String> deleteTask(@PathVariable String id){
+		taskRepository.deleteById(id);
+		return new ResponseEntity<String>("Task Deleted",HttpStatus.OK); 
 	}
 	
 	@PutMapping(path="setDueDate")
